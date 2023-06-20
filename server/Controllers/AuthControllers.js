@@ -1,7 +1,9 @@
-const UserModel = require("../Models/UserModel");
+const customerModel = require("../Models/customerModel");
+const bankerModel = require("../Models/bankerModel");
+const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 dotenv.config();
-const jwt = require("jsonwebtoken");
+
 const createToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: 3 * 24 * 60 * 60,
@@ -29,10 +31,10 @@ const handleErrors = (err) => {
   return errors;
 };
 
-module.exports.register = async (req, res, next) => {
+module.exports.customerRegister = async (req, res, next) => {
   try {
     const { email, password } = req.body;
-    const user = await UserModel.create({ email, password });
+    const user = await customerModel.create({ email, password });
     const token = createToken(user._id);
     res.cookie("jwt", token, {
       withCredentials: true,
@@ -46,10 +48,44 @@ module.exports.register = async (req, res, next) => {
     res.json({ errors, created: false });
   }
 };
-module.exports.login = async (req, res, next) => {
+module.exports.bankerRegister = async (req, res, next) => {
   try {
     const { email, password } = req.body;
-    const user = await UserModel.login(email, password);
+    const user = await bankerModel.create({ email, password });
+    const token = createToken(user._id);
+    res.cookie("jwt", token, {
+      withCredentials: true,
+      httpOnly: false,
+      maxAge: 3 * 24 * 60 * 60 * 1000,
+    });
+    res.status(201).json({ user: user._id, created: true });
+  } catch (e) {
+    console.log(e);
+    const errors = handleErrors(e);
+    res.json({ errors, created: false });
+  }
+};
+module.exports.customerLogin = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+    const user = await customerModel.login(email, password);
+    const token = createToken(user._id);
+    res.cookie("jwt", token, {
+      withCredentials: true,
+      httpOnly: false,
+      maxAge: 3 * 24 * 60 * 60 * 1000,
+    });
+    res.status(200).json({ user: user._id, created: true });
+  } catch (e) {
+    console.log(e);
+    const errors = handleErrors(e);
+    res.json({ errors, created: false });
+  }
+};
+module.exports.bankerLogin = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+    const user = await bankerModel.login(email, password);
     const token = createToken(user._id);
     res.cookie("jwt", token, {
       withCredentials: true,

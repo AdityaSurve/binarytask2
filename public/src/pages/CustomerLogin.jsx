@@ -3,7 +3,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { useState } from "react";
 import axios from "axios";
 
-const Login = () => {
+const CustomerLogin = () => {
   const navigate = useNavigate();
   const [values, setValues] = useState({
     email: "",
@@ -21,7 +21,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        "http://localhost:4000/login",
+        "http://localhost:4000/customer/login",
         {
           ...values,
         },
@@ -34,7 +34,7 @@ const Login = () => {
           if (email) generateError(email.message);
           if (password) generateError(password.message);
         } else {
-          navigate("/");
+          navigate("/customer");
         }
       }
     } catch (error) {
@@ -44,7 +44,7 @@ const Login = () => {
 
   return (
     <div>
-      <h2>Login Account</h2>
+      <h2>Customer Login Account</h2>
       <form onSubmit={(e) => handleSubmit(e)}>
         <div>
           <label htmlFor="email">Email</label>
@@ -71,7 +71,7 @@ const Login = () => {
         <button type="submit">Login</button>
         <span>
           Already have an account?
-          <Link to="/register">Sign Up</Link>
+          <Link to="/customer/register">Sign Up</Link>
         </span>
       </form>
       <ToastContainer />
@@ -79,4 +79,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default CustomerLogin;

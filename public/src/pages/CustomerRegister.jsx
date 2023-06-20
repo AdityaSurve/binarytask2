@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { useState } from "react";
 import axios from "axios";
-const Register = () => {
+const CustomerRegister = () => {
   const navigate = useNavigate();
   const [values, setValues] = useState({
     email: "",
@@ -20,7 +20,7 @@ const Register = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        "http://localhost:4000/register",
+        "http://localhost:4000/customer/register",
         {
           ...values,
         },
@@ -33,7 +33,7 @@ const Register = () => {
           if (email) generateError(email.message);
           if (password) generateError(password.message);
         } else {
-          navigate("/");
+          navigate("/customer");
         }
       }
     } catch (error) {
@@ -42,7 +42,7 @@ const Register = () => {
   };
   return (
     <div>
-      <h2>Register Account</h2>
+      <h2>Customer Register Account</h2>
       <form onSubmit={(e) => handleSubmit(e)}>
         <div>
           <label htmlFor="email">Email</label>
@@ -69,7 +69,7 @@ const Register = () => {
         <button type="submit">Register</button>
         <span>
           Already have an account?
-          <Link to="/login">Sign In</Link>
+          <Link to="/customer/login">Sign In</Link>
         </span>
       </form>
       <ToastContainer />
@@ -77,4 +77,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default CustomerRegister;
