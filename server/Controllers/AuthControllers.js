@@ -16,7 +16,12 @@ const handleErrors = (err) => {
     errors.email = "Email already registered";
     return errors;
   }
-  if (err.message.includes("Users validation failed")) {
+  if (err.message.includes("customer validation failed")) {
+    Object.values(err.errors).forEach(({ properties }) => {
+      errors[properties.path] = properties.message;
+    });
+  }
+  if (err.message.includes("banker validation failed")) {
     Object.values(err.errors).forEach(({ properties }) => {
       errors[properties.path] = properties.message;
     });

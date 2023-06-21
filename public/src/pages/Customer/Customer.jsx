@@ -10,7 +10,7 @@ const Customer = () => {
   useEffect(() => {
     const verifyUser = async () => {
       if (!cookies.jwt) {
-        navigate("/banker/login");
+        navigate("/customer/login");
       } else {
         const { data } = await axios.post(
           "http://localhost:4000",
@@ -19,7 +19,7 @@ const Customer = () => {
         );
         if (!data.status) {
           removeCookie("jwt");
-          navigate("/banker/login");
+          navigate("/customer/login");
         } else {
           setName(data.user);
         }
@@ -27,14 +27,16 @@ const Customer = () => {
     };
     verifyUser();
   }, [cookies, navigate]);
-
+  const logOut = () => {
+    removeCookie("jwt");
+    navigate("/customer/login");
+  };
   return (
     <div>
       <h1>{name}</h1>
       <button
         onClick={() => {
-          removeCookie("jwt");
-          navigate("/banker/login");
+          logOut();
         }}
       >
         Log Out

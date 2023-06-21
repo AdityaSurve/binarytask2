@@ -1,10 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import CustomerRegister from "./pages/CustomerRegister";
-import CustomerLogin from "./pages/CustomerLogin";
-import Customer from "./pages/Customer";
-import BankerRegister from "./pages/BankerRegister";
-import BankerLogin from "./pages/BankerLogin";
-import Banker from "./pages/Banker";
+import { Customer, CustomerLogin, CustomerRegister } from "./pages/Customer";
+import { Banker, BankerLogin, BankerRegister } from "./pages/Banker";
 import Home from "./pages/Home";
 const App = () => {
   return (

@@ -3,14 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import axios from "axios";
 
-const Customer = () => {
+const Banker = () => {
   const [name, setName] = useState("");
   const navigate = useNavigate();
   const [cookies, setCookie, removeCookie] = useCookies([]);
   useEffect(() => {
     const verifyUser = async () => {
       if (!cookies.jwt) {
-        navigate("/customer/login");
+        navigate("/banker/login");
       } else {
         const { data } = await axios.post(
           "http://localhost:4000",
@@ -19,7 +19,7 @@ const Customer = () => {
         );
         if (!data.status) {
           removeCookie("jwt");
-          navigate("/customer/login");
+          navigate("/banker/login");
         } else {
           setName(data.user);
         }
@@ -27,13 +27,14 @@ const Customer = () => {
     };
     verifyUser();
   }, [cookies, navigate]);
+
   return (
     <div>
       <h1>{name}</h1>
       <button
         onClick={() => {
           removeCookie("jwt");
-          navigate("/customer/login");
+          navigate("/banker/login");
         }}
       >
         Log Out
@@ -42,4 +43,4 @@ const Customer = () => {
   );
 };
 
-export default Customer;
+export default Banker;
