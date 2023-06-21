@@ -136,11 +136,15 @@ module.exports.getBalance = async (req, res, next) => {
   }
 };
 
-module.exports.depositMoney = async (req, res, next) => {
+module.exports.withdrawMoney = async (req, res, next) => {
   try {
     const { amount } = req.body;
-    const customer = await customerModel.findById(req.user.id);
-    customer.balance += amount;
+    const token = req.headers.authorization?.split(" ")[1];
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const customerId = decoded.id;
+
+    const customer = await customerModel.findById(customerId);
+    customer.balance = Number(customer.balance) - Number(amount);
     const transaction = new transactionModel({
       customer: customer._id,
       type: "Deposit",
@@ -156,17 +160,18 @@ module.exports.depositMoney = async (req, res, next) => {
   }
 };
 
-module.exports.withdrawMoney = async (req, res, next) => {
+module.exports.depositMoney = async (req, res, next) => {
   try {
     const { amount } = req.body;
-    const customer = await customerModel.findById(req.user.id);
-    if (customer.balance < amount) {
-      return res.status(400).json({ error: "Insufficient balance" });
-    }
-    customer.balance -= amount;
+    const token = req.headers.authorization?.split(" ")[1];
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const customerId = decoded.id;
+
+    const customer = await customerModel.findById(customerId);
+    customer.balance = Number(customer.balance) + Number(amount);
     const transaction = new transactionModel({
       customer: customer._id,
-      type: "Withdrawal",
+      type: "Deposit",
       amount,
     });
     customer.transactions.push(transaction._id);
@@ -175,6 +180,6 @@ module.exports.withdrawMoney = async (req, res, next) => {
     res.status(200).json({ balance: customer.balance });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: "Unable to withdraw money" });
+    res.status(500).json({ error: "Unable to deposit money" });
   }
 };

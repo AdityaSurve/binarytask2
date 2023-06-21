@@ -1,4 +1,3 @@
-// Customer.jsx
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
@@ -30,13 +29,17 @@ const Customer = () => {
       const { data } = await axios.post(
         "http://localhost:4000/customer/deposit",
         { amount: depositAmount },
-        { withCredentials: true }
+        {
+          headers: {
+            Authorization: `Bearer ${cookies.jwt}`,
+          },
+          withCredentials: true,
+        }
       );
       setBalance(data.balance);
       setDepositAmount(0);
     } catch (error) {
       console.log(error);
-      // Handle error if needed
     }
   };
 
@@ -45,13 +48,17 @@ const Customer = () => {
       const { data } = await axios.post(
         "http://localhost:4000/customer/withdraw",
         { amount: withdrawAmount },
-        { withCredentials: true }
+        {
+          headers: {
+            Authorization: `Bearer ${cookies.jwt}`,
+          },
+          withCredentials: true,
+        }
       );
       setBalance(data.balance);
       setWithdrawAmount(0);
     } catch (error) {
       console.log(error);
-      // Handle error if needed
     }
   };
 
