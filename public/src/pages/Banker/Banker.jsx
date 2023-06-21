@@ -47,10 +47,51 @@ const Banker = () => {
     verifyUser();
   }, [cookies, navigate]);
 
+  const [transactions, setTransactions] = useState([]);
+
+  useEffect(() => {
+    fetchTransactions();
+  }, []);
+
+  const fetchTransactions = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:4000/api/transactions"
+      );
+      setTransactions(response.data);
+    } catch (error) {
+      console.error("Error fetching transactions:", error);
+    }
+  };
   return (
     <div>
       <h1>{name}</h1>
       <button onClick={handleLogout}>Log Out</button>
+      <div>
+        <h1>Transactions</h1>
+        <table>
+          <thead>
+            <tr>
+              <th>Transaction ID</th>
+              <th>Customer ID</th>
+              <th>Type</th>
+              <th>Amount</th>
+              <th>Timestamp</th>
+            </tr>
+          </thead>
+          <tbody>
+            {transactions.map((transaction) => (
+              <tr key={transaction._id}>
+                <td>{transaction._id}</td>
+                <td>{transaction.customer}</td>
+                <td>{transaction.type}</td>
+                <td>{transaction.amount}</td>
+                <td>{transaction.timestamp}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
