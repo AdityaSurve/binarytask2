@@ -104,3 +104,21 @@ module.exports.bankerLogin = async (req, res, next) => {
     res.json({ errors, created: false });
   }
 };
+
+module.exports.customerLogout = (req, res, next) => {
+  res.cookie("jwt", "", {
+    withCredentials: true,
+    httpOnly: false,
+    maxAge: 0,
+  });
+  res.status(200).json({ loggedOut: true });
+};
+
+module.exports.bankerLogout = (req, res, next) => {
+  res.cookie("jwt", "", {
+    withCredentials: true,
+    httpOnly: false,
+    maxAge: 0,
+  });
+  res.status(200).json({ loggedOut: true });
+};

@@ -1,8 +1,9 @@
-const User = require("../Models/customerModel");
+const customer = require("../Models/customerModel");
+const banker = require("../Models/bankerModel");
 
 const jwt = require("jsonwebtoken");
 
-module.exports.checkUser = (req, res, next) => {
+module.exports.checkCustomer = (req, res, next) => {
   const token = req.cookies.jwt;
   if (token) {
     jwt.verify(token, process.env.JWT_SECRET, async (err, decodedToken) => {
@@ -10,7 +11,29 @@ module.exports.checkUser = (req, res, next) => {
         res.json({ status: false });
         next();
       } else {
-        const user = await User.findById(decodedToken.id);
+        const user = await customer.findById(decodedToken.id);
+        if (user) {
+          res.json({ status: true, user: user.email });
+        } else {
+          res.json({ status: false });
+          next();
+        }
+      }
+    });
+  } else {
+    res.json({ status: false });
+    next();
+  }
+};
+module.exports.checkBanker = (req, res, next) => {
+  const token = req.cookies.jwt;
+  if (token) {
+    jwt.verify(token, process.env.JWT_SECRET, async (err, decodedToken) => {
+      if (err) {
+        res.json({ status: false });
+        next();
+      } else {
+        const user = await banker.findById(decodedToken.id);
         if (user) {
           res.json({ status: true, user: user.email });
         } else {
