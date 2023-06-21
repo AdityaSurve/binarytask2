@@ -5,11 +5,23 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please enter an email"],
     unique: true,
+    lowercase: true,
   },
   password: {
     type: String,
     required: [true, "Please enter a password"],
+    minlength: [6, "Minimum password length is 6 characters"],
   },
+  balance: {
+    type: Number,
+    default: 0,
+  },
+  transactions: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Transaction",
+    },
+  ],
 });
 
 userSchema.pre("save", async function (next) {

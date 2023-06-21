@@ -5,6 +5,9 @@ const {
   bankerLogin,
   customerLogout,
   bankerLogout,
+  getBalance,
+  depositMoney,
+  withdrawMoney,
 } = require("../Controllers/AuthControllers");
 const {
   checkCustomer,
@@ -13,6 +16,9 @@ const {
 const router = require("express").Router();
 
 router.post("/customer", checkCustomer);
+router.post("/customer/balance", getBalance);
+router.post("/customer/deposit", depositMoney);
+router.post("/customer/withdraw", withdrawMoney);
 router.post("/banker", checkBanker);
 router.post("/customer/register", customerRegister);
 router.post("/customer/login", customerLogin);

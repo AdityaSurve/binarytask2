@@ -1,5 +1,6 @@
 const customerModel = require("../Models/customerModel");
 const bankerModel = require("../Models/bankerModel");
+const transactionModel = require("../Models/transactionModel");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 dotenv.config();
@@ -121,4 +122,59 @@ module.exports.bankerLogout = (req, res, next) => {
     maxAge: 0,
   });
   res.status(200).json({ loggedOut: true });
+};
+
+// Existing code...
+
+module.exports.getBalance = async (req, res, next) => {
+  try {
+    const customer = await customerModel.findById(req.user.id);
+    res.status(200).json({ balance: customer.balance });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Unable to retrieve balance" });
+  }
+};
+
+module.exports.depositMoney = async (req, res, next) => {
+  try {
+    const { amount } = req.body;
+    const customer = await customerModel.findById(req.user.id);
+    customer.balance += amount;
+    const transaction = new transactionModel({
+      customer: customer._id,
+      type: "Deposit",
+      amount,
+    });
+    customer.transactions.push(transaction._id);
+    await transaction.save();
+    await customer.save();
+    res.status(200).json({ balance: customer.balance });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Unable to deposit money" });
+  }
+};
+
+module.exports.withdrawMoney = async (req, res, next) => {
+  try {
+    const { amount } = req.body;
+    const customer = await customerModel.findById(req.user.id);
+    if (customer.balance < amount) {
+      return res.status(400).json({ error: "Insufficient balance" });
+    }
+    customer.balance -= amount;
+    const transaction = new transactionModel({
+      customer: customer._id,
+      type: "Withdrawal",
+      amount,
+    });
+    customer.transactions.push(transaction._id);
+    await transaction.save();
+    await customer.save();
+    res.status(200).json({ balance: customer.balance });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Unable to withdraw money" });
+  }
 };
