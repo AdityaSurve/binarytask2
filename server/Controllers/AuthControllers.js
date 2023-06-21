@@ -2,6 +2,7 @@ const customerModel = require("../Models/customerModel");
 const bankerModel = require("../Models/bankerModel");
 const transactionModel = require("../Models/transactionModel");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 const dotenv = require("dotenv");
 dotenv.config();
 
@@ -9,6 +10,12 @@ const createToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: 3 * 24 * 60 * 60,
   });
+};
+
+const createError = (status, message) => {
+  const err = new Error();
+  (err.status = status), (err.message = message);
+  return err;
 };
 
 const handleErrors = (err) => {
@@ -71,21 +78,44 @@ module.exports.bankerRegister = async (req, res, next) => {
     res.json({ errors, created: false });
   }
 };
+// module.exports.customerLogin = async (req, res, next) => {
+//   try {
+//     const { email, password } = req.body;
+//     const user = await customerModel.login(email, password);
+//     const token = createToken(user._id);
+//     res.cookie("jwt", token, {
+//       withCredentials: true,
+//       httpOnly: false,
+//       maxAge: 3 * 24 * 60 * 60 * 1000,
+//     });
+//     res.status(200).json({ user: user._id, created: true });
+//   } catch (e) {
+//     console.log(e);
+//     const errors = handleErrors(e);
+//     res.json({ errors, created: false });
+//   }
+// };
 module.exports.customerLogin = async (req, res, next) => {
   try {
-    const { email, password } = req.body;
-    const user = await customerModel.login(email, password);
-    const token = createToken(user._id);
-    res.cookie("jwt", token, {
-      withCredentials: true,
-      httpOnly: false,
-      maxAge: 3 * 24 * 60 * 60 * 1000,
-    });
-    res.status(200).json({ user: user._id, created: true });
-  } catch (e) {
-    console.log(e);
-    const errors = handleErrors(e);
-    res.json({ errors, created: false });
+    const user = await customerModel.findOne({ email: req.body.email });
+    if (!user) return next(createError(404, "User not found!"));
+
+    const isCorrect = await bcrypt.compare(req.body.password, user.password);
+
+    if (!isCorrect) return next(createError(400, "Wrong Credentials!"));
+
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+    const { password, ...others } = user._doc;
+
+    res
+      .cookie("jwt", token, {
+        httpOnly: false,
+      })
+      .status(200)
+      .json(others);
+  } catch (err) {
+    next(err);
+    console.log(err);
   }
 };
 module.exports.bankerLogin = async (req, res, next) => {

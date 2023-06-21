@@ -4,17 +4,23 @@ import { Banker, BankerLogin, BankerRegister } from "./pages/Banker";
 import Home from "./pages/Home";
 const App = () => {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route exact path="/customer/register" element={<CustomerRegister />} />
-        <Route exact path="/customer/login" element={<CustomerLogin />} />
-        <Route path="/customer" element={<Customer />} />
-        <Route exact path="/banker/register" element={<BankerRegister />} />
-        <Route exact path="/banker/login" element={<BankerLogin />} />
-        <Route path="/banker" element={<Banker />} />
-        <Route path="/" element={<Home />} />
-      </Routes>
-    </BrowserRouter>
+    <div className="h-screen w-screen bg-veryDarkBlue text-white">
+      <BrowserRouter>
+        <Routes>
+          <Route
+            exact
+            path="/customer/register"
+            element={<CustomerRegister />}
+          />
+          <Route exact path="/customer/login" element={<CustomerLogin />} />
+          <Route path="/customer" element={<Customer />} />
+          <Route exact path="/banker/register" element={<BankerRegister />} />
+          <Route exact path="/banker/login" element={<BankerLogin />} />
+          <Route path="/banker" element={<Banker />} />
+          <Route path="/" element={<Home />} />
+        </Routes>
+      </BrowserRouter>
+    </div>
   );
 };
 
