@@ -4,7 +4,7 @@ import { Banker, BankerLogin, BankerRegister } from "./pages/Banker";
 import Home from "./pages/Home";
 const App = () => {
   return (
-    <div className="h-screen w-screen bg-veryDarkBlue text-white">
+    <div className="h-screen z-0 w-screen bg-veryDarkBlue text-white">
       <BrowserRouter>
         <Routes>
           <Route
