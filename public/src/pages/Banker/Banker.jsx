@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
+import Icon from "../../assets/icon.png";
 import axios from "axios";
 
 const Banker = () => {
@@ -21,8 +22,7 @@ const Banker = () => {
         navigate("/banker/login");
       }, 1000);
     } catch (error) {
-      console.log(error);
-      // Handle error if needed
+      alert("Something went wrong, please try again later");
     }
   };
 
@@ -60,11 +60,11 @@ const Banker = () => {
       );
       setTransactions(response.data);
     } catch (error) {
-      console.error("Error fetching transactions:", error);
+      alert("Error fetching transactions:", error);
     }
   };
   return (
-    <div>
+    <div className="relative h-full w-full font-pops flex gap-10 lg:gap-5 flex-col justify-center items-center">
       <h1>{name}</h1>
       <button onClick={handleLogout}>Log Out</button>
       <div>
@@ -91,6 +91,18 @@ const Banker = () => {
             ))}
           </tbody>
         </table>
+      </div>
+      <div className="h-[10%] z-[10000] w-full absolute flex bg-darkBlue top-0 font-pops justify-between px-4 md:px-16 items-center left-0 text-white">
+        <div className="text-2xl flex gap-3 items-center font-bold cursor-pointer">
+          <img src={Icon} alt="" className="h-8 w-8 object-cover" />
+          <div>Fundify</div>
+        </div>
+        <button
+          onClick={handleLogout}
+          className="hover:bg-veryDarkBlue2 px-4 py-2 rounded-full transition-all duration-300 ease-in-out"
+        >
+          Log Out
+        </button>
       </div>
     </div>
   );

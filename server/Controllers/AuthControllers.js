@@ -82,6 +82,7 @@ module.exports.bankerRegister = async (req, res, next) => {
 //   try {
 //     const { email, password } = req.body;
 //     const user = await customerModel.login(email, password);
+
 //     const token = createToken(user._id);
 //     res.cookie("jwt", token, {
 //       withCredentials: true,
@@ -100,7 +101,7 @@ module.exports.customerLogin = async (req, res, next) => {
     const user = await customerModel.findOne({ email: req.body.email });
     if (!user) return next(createError(404, "User not found!"));
 
-    const isCorrect = await bcrypt.compare(req.body.password, user.password);
+    const isCorrect = bcrypt.compare(req.body.password, user.password);
 
     if (!isCorrect) return next(createError(400, "Wrong Credentials!"));
 

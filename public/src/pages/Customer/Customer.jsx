@@ -22,8 +22,7 @@ const Customer = () => {
       );
       setBalance(data.balance);
     } catch (error) {
-      console.log(error);
-      // Handle error if needed
+      alert("Something went wrong, please refresh the page and try again");
     }
   };
 
@@ -42,7 +41,7 @@ const Customer = () => {
       setBalance(data.balance);
       setDepositAmount(0);
     } catch (error) {
-      console.log(error);
+      alert("Deposit failed, please try again later");
     }
   };
 
@@ -61,7 +60,7 @@ const Customer = () => {
       setBalance(data.balance);
       setWithdrawAmount(0);
     } catch (error) {
-      console.log(error);
+      alert("Withdraw failed, please try again later");
     }
   };
 
@@ -77,8 +76,7 @@ const Customer = () => {
         navigate("/customer/login");
       }, 1000);
     } catch (error) {
-      console.log(error);
-      // Handle error if needed
+      alert("Something went wrong, please try again later");
     }
   };
 
@@ -105,7 +103,9 @@ const Customer = () => {
 
   return (
     <div className="relative h-full w-full font-pops flex gap-10 lg:gap-5 flex-col justify-center items-center">
-      <h1 className="text-3xl font-bold">Welcome, {name}</h1>
+      <h1 className="lg:text-left text-center text-3xl font-bold">
+        Welcome, <span className="text-sky-500">{name}</span>
+      </h1>
       <h2 className="text-xl font-semibold">
         Balance:{" "}
         <span className="ms-2 text-2xl font-bold text-sky-500">{balance}</span>
@@ -132,7 +132,7 @@ const Customer = () => {
 
       {showWithdrawButton && (
         <div className="bg-[#00000030] backdrop-filter backdrop-blur-xl flex justify-center items-center h-full w-full fixed top-0 left-0">
-          <div className="relative w-[30%] h-[50%] bg-white text-darkBlue justify-center items-center text-center gap-5 flex flex-col">
+          <div className="relative w-[70%] lg:w-[30%] h-[40%] lg:h-[50%] bg-white text-darkBlue justify-center items-center text-center gap-5 flex flex-col">
             <h3 className="text-2xl font-bold">Withdraw Money</h3>
             <input
               type="number"
@@ -171,7 +171,7 @@ const Customer = () => {
       )}
       {showDepositButton && (
         <div className="bg-[#00000030] backdrop-filter backdrop-blur-xl flex justify-center items-center h-full w-full fixed top-0 left-0">
-          <div className="relative w-[30%] h-[50%] bg-white text-darkBlue justify-center items-center text-center gap-5 flex flex-col">
+          <div className="relative w-[70%] lg:w-[30%] h-[40%] lg:h-[50%] bg-white text-darkBlue justify-center items-center text-center gap-5 flex flex-col">
             <h3 className="text-2xl font-bold">Deposit Money</h3>
             <input
               type="number"
