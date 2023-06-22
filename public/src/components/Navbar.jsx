@@ -1,7 +1,6 @@
 import { useState } from "react";
 import customerGuidelines from "../data/customerGuidelines";
 import aboutData from "../data/aboutData";
-import MapImage from "../assets/map.png";
 import Icon from "../assets/icon.png";
 const Navbar = () => {
   const [showHelp, setShowHelp] = useState(false);
@@ -29,7 +28,7 @@ const Navbar = () => {
           viewBox="0 0 16 16"
         >
           <path
-            fill-rule="evenodd"
+            fillRule="evenodd"
             d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"
           />
         </svg>
@@ -41,7 +40,7 @@ const Navbar = () => {
             setShowHelp(true);
           }}
         >
-          help
+          Help
         </div>
         <div
           className="font-semibold hover:bg-veryDarkBlue2 px-4 py-2 rounded-full cursor-pointer"
@@ -49,7 +48,7 @@ const Navbar = () => {
             setShowMap(true);
           }}
         >
-          locate us
+          Locate us
         </div>
         <div
           className="font-semibold hover:bg-veryDarkBlue2 px-4 py-2 rounded-full cursor-pointer"
@@ -57,7 +56,7 @@ const Navbar = () => {
             setShowAbout(true);
           }}
         >
-          about
+          About
         </div>
       </div>
       {showHelp && (
@@ -70,15 +69,12 @@ const Navbar = () => {
               </span>
               !
             </div>
-            <div className="text-lg mx-3 text-veryDarkBlue mt-5 font-bold">
+            <div className="text-lg mx-3 text-veryDarkBlue mt-7 font-bold">
               CUSTOMER GUIDELINES :
             </div>
             {customerGuidelines.map((guideline) => (
-              <div className="mx-6">
-                <div
-                  key={guideline.id}
-                  className="text-BASE text-gray-700 mt-3 font-bold"
-                >
+              <div className="mx-6" key={guideline.id}>
+                <div className="text-gray-700 mt-5 font-bold">
                   {guideline.title}
                 </div>
                 <div className="text-gray-500 mx-2 text-sm lg:text-xs mt-2">
@@ -109,11 +105,17 @@ const Navbar = () => {
       {showMap && (
         <div className="fixed z-[10000] overflow-y-auto top-0 left-0 h-full w-full bg-[#00000030] backdrop-filter backdrop-blur-xl flex justify-center items-center">
           <div className="relative rounded-xl overflow-hidden  h-[30rem] w-[90%] lg:w-[30rem]">
-            <img
-              src={MapImage}
-              alt=""
-              className="absolute h-full w-full object-cover"
-            />
+            <div className="h-full w-full">
+              <iframe
+                title="map"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d30141.351788580774!2d72.80838189333622!3d19.209655399419763!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7b6c71e00b21f%3A0xfa74b1f57d575513!2sKandivali%2C%20Kandivali%20West%2C%20Mumbai%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1687425199351!5m2!1sen!2sin"
+                width="100%"
+                height="100%"
+                allowfullscreen=""
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+              ></iframe>
+            </div>
             <div className="h-1/4 flex text-center justify-center items-center rounded-md shadow-lg shadow-black w-[40%] absolute bottom-0 right-0 bg-gray-200 text-darkBlue">
               MyOffice, B/304 MyBuilding <br />
               MyRoad, MyCity
@@ -204,7 +206,7 @@ const Navbar = () => {
                   setShowHelp(true);
                 }}
               >
-                help
+                Help
               </div>
               <div
                 className="font-semibold hover:bg-veryDarkBlue2 px-4 py-2 rounded-full cursor-pointer"
@@ -212,7 +214,7 @@ const Navbar = () => {
                   setShowMap(true);
                 }}
               >
-                locate us
+                Locate us
               </div>
               <div
                 className="font-semibold hover:bg-veryDarkBlue2 px-4 py-2 rounded-full cursor-pointer"
@@ -220,7 +222,7 @@ const Navbar = () => {
                   setShowAbout(true);
                 }}
               >
-                about
+                About
               </div>
             </div>
           </div>

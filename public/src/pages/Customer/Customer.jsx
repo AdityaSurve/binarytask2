@@ -7,6 +7,7 @@ import axios from "axios";
 const Customer = () => {
   const [showDepositButton, setShowDepositButton] = useState(false);
   const [showWithdrawButton, setShowWithdrawButton] = useState(false);
+  const [showBalance, setShowBalance] = useState(false);
   const [name, setName] = useState("");
   const [balance, setBalance] = useState(0);
   const [depositAmount, setDepositAmount] = useState(0);
@@ -16,11 +17,18 @@ const Customer = () => {
 
   const handleGetBalance = async () => {
     try {
-      const { data } = await axios.get(
-        "http://localhost:4000/customer/balance",
-        { withCredentials: true }
+      const { data } = await axios.post(
+        "http://localhost:4000/customer/deposit",
+        { amount: 0 },
+        {
+          headers: {
+            Authorization: `Bearer ${cookies.jwt}`,
+          },
+          withCredentials: true,
+        }
       );
       setBalance(data.balance);
+      setDepositAmount(0);
     } catch (error) {
       alert("Something went wrong, please refresh the page and try again");
     }
@@ -95,6 +103,7 @@ const Customer = () => {
           navigate("/customer/login");
         } else {
           setName(data.user);
+          console.log(data);
         }
       }
     };
@@ -106,10 +115,23 @@ const Customer = () => {
       <h1 className="lg:text-left text-center text-3xl font-bold">
         Welcome, <span className="text-sky-500">{name}</span>
       </h1>
-      <h2 className="text-xl font-semibold">
-        Balance:{" "}
-        <span className="ms-2 text-2xl font-bold text-sky-500">{balance}</span>
-      </h2>
+      <div
+        onClick={() => {
+          handleGetBalance();
+          setShowBalance(!showBalance);
+        }}
+        className="bg-sky-500 cursor-pointer text-white px-6 py-2 rounded-xl hover:bg-sky-600 transition-all duration-300 ease-in-out"
+      >
+        Click to view Balance
+      </div>
+      {showBalance && (
+        <h2 className="text-xl font-semibold">
+          Balance:{" "}
+          <span className="ms-2 text-2xl font-bold text-sky-500">
+            {balance}
+          </span>
+        </h2>
+      )}
 
       <div className="flex gap-5 mt-20">
         <div

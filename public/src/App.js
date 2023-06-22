@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Customer, CustomerLogin, CustomerRegister } from "./pages/Customer";
-import { Banker, BankerLogin, BankerRegister } from "./pages/Banker";
+import { Banker, BankerLogin } from "./pages/Banker";
 import Home from "./pages/Home";
 const App = () => {
   return (
@@ -14,7 +14,6 @@ const App = () => {
           />
           <Route exact path="/customer/login" element={<CustomerLogin />} />
           <Route path="/customer" element={<Customer />} />
-          <Route exact path="/banker/register" element={<BankerRegister />} />
           <Route exact path="/banker/login" element={<BankerLogin />} />
           <Route path="/banker" element={<Banker />} />
           <Route path="/" element={<Home />} />
